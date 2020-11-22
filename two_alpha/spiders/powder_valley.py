@@ -18,9 +18,9 @@ class PowderValleySpider(scrapy.Spider):
     def parse(self, response):
         for item in response.xpath('//ul[has-class("products columns-3")]/li'):
             if not item.xpath('a/p[has-class("out-of-stock")]'):
-                il = ItemLoader(item=ReloadingItem(), response=response)
-                il.add_value('product_name', item.xpath('a/h2/text()').get())
-                il.add_value('url', item.xpath('a/@href').get())
+                il = ItemLoader(item=ReloadingItem(), selector=item)
+                il.add_xpath('product_name', 'a/h2/text()')
+                il.add_xpath('url', 'a[not(contains(@rel, "nofollow"))]/@href')
                 yield il.load_item() if il.load_item() else None
 
         next_button = response.xpath('//span[has-class("pager-text right")]')
