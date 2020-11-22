@@ -8,6 +8,5 @@ import scrapy
 
 class ReloadingItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    product_name = scrpay.Field()
+    product_name = scrapy.Field()
     url = scrapy.Field()

@@ -1,4 +1,6 @@
 import scrapy
+from scrapy.loader import ItemLoader
+from two_alpha.items import ReloadingItem
 
 class PowderValleySpider(scrapy.Spider):
     name = 'PowderValley'
@@ -14,22 +16,22 @@ class PowderValleySpider(scrapy.Spider):
     ]
 
     def parse(self, response):
+        ri = ItemLoader(item=ReloadingItem(), response=response);
         for item in response.css('ul.products.columns-3').xpath('li'):
             if item.css('p.stock.out-of-stock').get() is None:
-                yield {
-                    'Name': item.css('h2::text').get(),
-                    'URL' : item.xpath('a/@href').get()
-                }
+                ri.add_value('product_name', item.css('h2::text').get());
+                ri.add_value('url', item.xpath('a/@href').get());
+                # yield {
+                #     'Name': item.css('h2::text').get(),
+                #     'URL' : item.xpath('a/@href').get()
+                # }
             # yield {
             #    'Stock': 1 if item.css('p.stock.out-of-stock').get() is None else 0,
             #    'Name': item.css('h2::text').get(),
             # }
 
+        yield ri.load_item()
         next_button = response.css('span.pager-text.right')
         if next_button.get() is not None:
             next_page = next_button.xpath('../@href').get()
             yield response.follow(next_page, self.parse)
-        else:
-            yield {}
-
-

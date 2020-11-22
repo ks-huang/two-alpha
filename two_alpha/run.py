@@ -10,7 +10,7 @@ try:
             'crawl',
             'PowderValley',
             '-o',
-            'out.json'
+            'out.jl'
         ]
     )
 except SystemExit:
