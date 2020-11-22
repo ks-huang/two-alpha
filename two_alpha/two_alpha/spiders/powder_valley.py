@@ -16,7 +16,7 @@ class PowderValleySpider(scrapy.Spider):
     ]
 
     def parse(self, response):
-        ri = ItemLoader(item=ReloadingItem(), response=response);
+        ri = ItemLoader(item=ReloadingItem(), response=response)
         for item in response.css('ul.products.columns-3').xpath('li'):
             if item.css('p.stock.out-of-stock').get() is None:
                 ri.add_value('product_name', item.css('h2::text').get());
@@ -30,7 +30,9 @@ class PowderValleySpider(scrapy.Spider):
             #    'Name': item.css('h2::text').get(),
             # }
 
-        yield ri.load_item()
+        if ri.load_item():
+            yield ri.load_item()
+
         next_button = response.css('span.pager-text.right')
         if next_button.get() is not None:
             next_page = next_button.xpath('../@href').get()
