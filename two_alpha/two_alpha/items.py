@@ -6,7 +6,8 @@
 import scrapy
 
 
-class TwoAlphaItem(scrapy.Item):
+class ReloadingItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    pass
+    product_name = scrpay.Field()
+    url = scrapy.Field()
