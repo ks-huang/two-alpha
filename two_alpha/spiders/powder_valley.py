@@ -17,14 +17,14 @@ class PowderValleySpider(scrapy.Spider):
 
     def parse(self, response):
         il = ItemLoader(item=ReloadingItem(), response=response)
-        for item in response.css('ul.products.columns-3').xpath('li'):
-            if item.css('p.stock.out-of-stock').get() is None:
-                il.add_value('product_name', item.css('h2::text').get())
+        for item in response.xpath('//ul[has-class("products columns-3")]/li'):
+            if not item.xpath('a/p[has-class("out-of-stock")]'):
+                il.add_value('product_name', item.xpath('a/h2/text()').get())
                 il.add_value('url', item.xpath('a/@href').get())
 
         yield il.load_item() if il.load_item() else None
 
-        next_button = response.css('span.pager-text.right')
+        next_button = response.xpath('//span[has-class("pager-text right")]')
         if next_button.get() is not None:
             next_page = next_button.xpath('../@href').get()
             yield response.follow(next_page, self.parse)
