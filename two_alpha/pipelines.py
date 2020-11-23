@@ -5,22 +5,39 @@
 
 
 # useful for handling different item types with a single interface
+from email.message import EmailMessage
 from itemadapter import ItemAdapter
 import json
 import logging
 import os
+import smtplib
 import time
 
 class TwoAlphaPipeline:
     snapshot = {}
+    GMAIL_ACCOUNT = 'fogworld2019@gmail.com'
+    GMAIL_PASSWORD = 'marath0n'
 
     def __init__(self):
-        self.snapshot_file_path = '/tmp/scapy'
+        self.snapshot_file_path = '/tmp/scrapy'
         self.snapshot_file_prefix = 'snapshot-'
         self.snapshot_file_name = self.snapshot_file_prefix + self.__class__.__name__ + '.json'
 
         if not os.path.exists(self.snapshot_file_path):
             os.makedirs(self.snapshot_file_path)
+
+    def send_notification(self, email, content):
+        # Establish a secure session with gmail's outgoing SMTP server using your gmail account
+        server = smtplib.SMTP( "smtp.gmail.com", 587 )
+        server.starttls()
+        server.login(self.GMAIL_ACCOUNT, self.GMAIL_PASSWORD)
+
+        # Send text message through SMS gateway of destination number
+        msg = EmailMessage()
+        msg.set_content(content)
+        msg['To'] = email
+        msg['From'] = self.GMAIL_ACCOUNT
+        server.send_message(msg)
 
     def open_spider(self, spider):
         try:
@@ -40,6 +57,9 @@ class TwoAlphaPipeline:
         logging.info("Newly added...")
         logging.info(diff)
         if diff:
+            msg = ''.join([p + ': ' + u + '\n' for p, u in diff.items()])
+            email = '6467632336@vzwpix.com'
+            self.send_notification(email, msg)
             stamped_file_path = os.path.join(self.snapshot_file_path, self.snapshot_file_prefix + time.strftime("%Y%m%d-%H%M%S") + '.json')
             with open(stamped_file_path, 'w') as outfile:
                 outfile.write(data)
