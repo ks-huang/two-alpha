@@ -12,9 +12,12 @@ import logging
 class TwoAlphaPipeline:
     snapshot = {}
 
+    def __init__(self):
+        self.snapshot_file_path = '/tmp/snapshot-' + self.__class__.__name__ + '.json'
+
     def open_spider(self, spider):
         try:
-            with open('snapshot.json', 'r') as f:
+            with open(self.snapshot_file_path, 'r') as f:
                 self.lastSnapshot = json.load(f)
         except IOError:
             self.lastSnapshot = {}
@@ -32,7 +35,7 @@ class TwoAlphaPipeline:
 
         # update snapshot
         data = json.dumps(self.snapshot)
-        with open('snapshot.json', 'w') as outfile:
+        with open(self.snapshot_file_path, 'w') as outfile:
             outfile.write(data)
 
     def process_item(self, item, spider):
