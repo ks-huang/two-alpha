@@ -2,6 +2,7 @@ import datetime
 from datetime import datetime as dt
 import os
 import random
+import pytz
 from scrapy.cmdline import execute
 from scrapy.crawler import CrawlerRunner
 from scrapy.utils.project import get_project_settings
@@ -39,7 +40,8 @@ def crawl():
     each successful crawl.
     """
 
-    t1, cur, t2 = datetime.time(8, m1, s1),  dt.now().time(),  datetime.time(20, m2, s2)
+    est = pytz.timezone('US/Eastern')
+    t1, cur, t2 = datetime.time(8, m1, s1),  dt.utcnow().replace(tzinfo=pytz.utc).astimezone(est).time(),  datetime.time(20, m2, s2)
     if t1 < cur < t2:
         # crawl_job() returns a Deferred
         d = crawl_job()
