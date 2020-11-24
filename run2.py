@@ -1,3 +1,5 @@
+import datetime
+from datetime import datetime as dt
 import os
 import random
 from scrapy.cmdline import execute
@@ -9,6 +11,8 @@ from twisted.internet import reactor
 from two_alpha.spiders.powder_valley import PowderValleySpider
 
 
+m1, s1 = random.randint(0, 59), random.randint(0, 59)
+m2, s2 = random.randint(0, 59), random.randint(0, 59)
 
 def crawl_job():
     """
@@ -34,11 +38,18 @@ def crawl():
     A "recursive" function that schedules a crawl 30 seconds after
     each successful crawl.
     """
-    # crawl_job() returns a Deferred
-    d = crawl_job()
-    # call schedule_next_crawl(<scrapy response>, n) after crawl job is complete
-    d.addCallback(schedule_next_crawl, random.randint(61, 121))
-    d.addErrback(catch_error)
+
+    t1, cur, t2 = datetime.time(8, m1, s1),  dt.now().time(),  datetime.time(20, m2, s2)
+    if t1 < cur < t2:
+        # crawl_job() returns a Deferred
+        d = crawl_job()
+
+        # call schedule_next_crawl(<scrapy response>, n) after crawl job is complete
+        d.addCallback(schedule_next_crawl, random.randint(61, 121))
+        d.addErrback(catch_error)
+    else:
+        print('Blackout hour: cur: {} not in [{} {}]'.format(cur, t1, t2))
+        reactor.callFromThread(reactor.stop)
 
 def catch_error(failure):
     print(failure.value)
