@@ -1,19 +1,32 @@
+import random
 import scrapy
 from scrapy.loader import ItemLoader
 from two_alpha.items import ReloadingItem
 
 class PowderValleySpider(scrapy.Spider):
     name = 'PowderValley'
-    start_urls = [
-        ('https://www.powdervalleyinc.com/product-category/reloading-supplies'
-         '/brass/rifle-brass/?filter_caliber-range-sort-by=300-aac-blackout'),
-        ('https://www.powdervalleyinc.com/product-category/reloading-supplies'
-         '/primers/?filter_product-type=large-rifle-primers%2Csmall-rifle-primers'
-         '&query_type_product-type=or&query_type_brand=or&filter_brand=cci%2Cfederal-reloading-supplies'),
-        ('https://www.powdervalleyinc.com/product-category/reloading-supplies/'
-          'bullets/rifle/?query_type_grain-weight=or&filter_grain-weight=125-gr%2C168-gr%2C180-gr%2C220-gr'
-          '&filter_caliber-range-sort-by=307-309&query_type_caliber-range-sort-by=or&filter_brand=sierra&query_type_brand=or')
+    args = [
+        [125, 180, 220, random.randint(100,250)],
+        ['cci', 'federal-reloading-supplies', 'cc' + chr(random.randint(ord('a'), ord('z')))],
+        ['300-aac-blackout','308-win', '{}-win'.format(random.randint(301, 999))]
     ]
+
+    start_urls = [
+        ('https://www.powdervalleyinc.com/product-category/reloading-supplies/bullets/rifle/'
+         '?query_type_grain-weight=or&filter_grain-weight={}-gr%2C{}-gr%2C{}-gr%2C{}-gr&'
+         'filter_caliber-range-sort-by=307-309&query_type_caliber-range-sort-by=or&filter_brand=sierra&query_type_brand=or'),
+        ('https://www.powdervalleyinc.com/product-category/reloading-supplies/primers/?query_type_product-type=or'
+         '&filter_brand={}%2C{}%2C{}&query_type_brand=or&filter_product-type=small-rifle-primers'),
+        ('https://www.powdervalleyinc.com/product-category/reloading-supplies'
+         '/brass/rifle-brass/?filter_caliber-range-sort-by={}%2C{}%2C{}&query_type_caliber-range-sort-by=or'),
+    ]
+
+    def __init__(self):
+        for ix in range(len(self.start_urls)):
+            random.shuffle(self.args[ix])
+            self.start_urls[ix] = self.start_urls[ix].format(*self.args[ix])
+
+        super().__init__
 
     def parse(self, response):
         for item in response.xpath('//ul[has-class("products columns-3")]/li'):
