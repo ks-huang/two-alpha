@@ -20,9 +20,8 @@ class PowderValleySpider(scrapy.Spider):
         ['300-aac-blackout','308-win', '{}-win'.format(random.randint(301, 999))]
     }
 
-    start_urls = []
-
     def __init__(self):
+        self.start_urls = []
         for url, args in self.preproc_urls.items():
             random.shuffle(args)
             self.start_urls.append(url.format(*args))
