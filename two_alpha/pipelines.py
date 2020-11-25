@@ -13,6 +13,8 @@ import os
 import smtplib
 import time
 
+logger = logging.getLogger(__name__)
+
 class TwoAlphaPipeline:
     snapshot = {}
     GMAIL_ACCOUNT = 'fogworld2019@gmail.com'
@@ -54,8 +56,8 @@ class TwoAlphaPipeline:
 
         # dump product added
         diff = { k : self.snapshot[k] for k, _ in set(self.snapshot.items()) - set(self.lastSnapshot.items()) }
-        logging.info("Newly added...")
-        logging.info(diff)
+        logger.info("Newly added...")
+        logger.info(diff)
         if diff:
             msg = ''.join([p + ': ' + u + '\n' for p, u in diff.items()])
             email = '6467632336@vzwpix.com'
@@ -66,8 +68,8 @@ class TwoAlphaPipeline:
 
         # dump product removed
         diff = { k : self.lastSnapshot[k] for k in set(self.lastSnapshot) - set(self.snapshot) }
-        logging.info("Just gone...")
-        logging.info(diff)
+        logger.info("Just gone...")
+        logger.info(diff)
 
     def process_item(self, item, spider):
         prod = item['product_name']

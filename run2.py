@@ -1,5 +1,6 @@
 import datetime
 from datetime import datetime as dt
+import logging
 import os
 import random
 import pytz
@@ -14,6 +15,8 @@ from two_alpha.spiders.powder_valley import PowderValleySpider
 
 m1, s1 = random.randint(0, 59), random.randint(0, 59)
 m2, s2 = random.randint(0, 59), random.randint(0, 59)
+
+logger = logging.getLogger(__name__)
 
 def crawl_job():
     """
@@ -31,7 +34,7 @@ def schedule_next_crawl(null, sleep_time):
     """
     Schedule the next crawl
     """
-    print('sleep for: {} secs'.format(sleep_time))
+    logger.info('sleep for: {} secs'.format(sleep_time))
     reactor.callLater(sleep_time, crawl)
 
 def crawl():
@@ -50,7 +53,7 @@ def crawl():
         d.addCallback(schedule_next_crawl, random.randint(61, 121))
         d.addErrback(catch_error)
     else:
-        print('Blackout hour: cur: {} not in [{} {}]'.format(cur, t1, t2))
+        logger.info('Blackout hour: cur: {} not in [{} {}]'.format(cur, t1, t2))
         reactor.callFromThread(reactor.stop)
 
 def catch_error(failure):
