@@ -67,7 +67,7 @@ class TwoAlphaPipeline:
                 outfile.write(data)
 
         # dump product removed
-        diff = { k : self.lastSnapshot[k] for k in set(self.lastSnapshot) - set(self.snapshot) }
+        diff = { k : self.lastSnapshot[k] for k, _ in set(self.lastSnapshot.items()) - set(self.snapshot.items()) }
         logger.info("Just gone...")
         logger.info(diff)
 

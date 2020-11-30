@@ -53,6 +53,7 @@ def crawl():
         d.addCallback(schedule_next_crawl, random.randint(61, 121))
         d.addErrback(catch_error)
     else:
+        print('Blackout hour: cur: {} not in [{} {}]'.format(cur, t1, t2))
         logger.info('Blackout hour: cur: {} not in [{} {}]'.format(cur, t1, t2))
         reactor.callFromThread(reactor.stop)
 
