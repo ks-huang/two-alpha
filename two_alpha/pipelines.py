@@ -16,7 +16,6 @@ import time
 logger = logging.getLogger(__name__)
 
 class TwoAlphaPipeline:
-    snapshot = {}
     GMAIL_ACCOUNT = 'fogworld2019@gmail.com'
     GMAIL_PASSWORD = 'marath0n'
 
@@ -42,9 +41,11 @@ class TwoAlphaPipeline:
         server.send_message(msg)
 
     def open_spider(self, spider):
+        self.snapshot = {}
         try:
             with open(os.path.join(self.snapshot_file_path, self.snapshot_file_name), 'r') as f:
                 self.lastSnapshot = json.load(f)
+                logger.info("Last snapshot: {}".format(len(self.lastSnapshot)))
         except IOError:
             self.lastSnapshot = {}
 
