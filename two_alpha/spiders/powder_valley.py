@@ -12,6 +12,11 @@ class PowderValleySpider(scrapy.Spider):
          'filter_caliber-range-sort-by=307-309&query_type_caliber-range-sort-by=or&filter_brand=sierra&query_type_brand=or') :
         [125, 180, 168, 220, random.randint(231,250)],
 
+        ('https://www.powdervalleyinc.com/product-category/reloading-supplies/bullets/pistol/'
+         '?query_type_grain-weight=or&filter_grain-weight={}-gr%2C{}-gr&'
+         'filter_caliber-range-sort-by=355-358&query_type_caliber-range-sort-by=or&query_type_brand=or') :
+         [115, random.randint(241,280)],
+
         # prrimers
         ('https://www.powdervalleyinc.com/product-category/reloading-supplies/primers/?query_type_product-type=or'
          '&filter_brand={}%2C{}%2C{}&query_type_brand=or&filter_product-type=small-rifle-primers') :
