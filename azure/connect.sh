@@ -1,1 +1,1 @@
-ssh -i azure/KS_key.pem azureuser@40.117.34.118
+ssh -i azure/two-alpha_key.pem azureuser@52.188.147.218
