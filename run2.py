@@ -1,5 +1,5 @@
 import datetime
-from datetime import datetime as dt, date
+from datetime import datetime as dt, date, timedelta
 import logging
 import os
 import pytz
@@ -8,16 +8,14 @@ from scrapy.cmdline import execute
 from scrapy.crawler import CrawlerRunner
 from scrapy.utils.project import get_project_settings
 from scrapy.utils.log import configure_logging
-import time
 from twisted.internet import reactor
 
 from two_alpha.spiders.bcm import BcmSpider
 from two_alpha.spiders.powder_valley import PowderValleySpider
 
 
-m1, s1 = random.randint(0, 59), random.randint(0, 59)
-m2, s2 = random.randint(0, 59), random.randint(0, 59)
-
+t1 = datetime.time( 8, random.randint(0, 59), random.randint(0, 59))
+t2 = datetime.time(20, random.randint(0, 59), random.randint(0, 59))
 logger = logging.getLogger(__name__)
 
 def crawl_job():
@@ -47,9 +45,10 @@ def crawl():
     each successful crawl.
     """
 
-    global m1, s1, m2, s2
+    global t1, t2
     est = pytz.timezone('US/Eastern')
-    t1, cur, t2 = datetime.time(8, m1, s1),  dt.utcnow().replace(tzinfo=pytz.utc).astimezone(est).time(),  datetime.time(20, m2, s2)
+    cur = dt.utcnow().replace(tzinfo=pytz.utc).astimezone(est).time()
+
     if t1 < cur < t2:
         # crawl_job() returns a Deferred
         d = crawl_job()
@@ -58,16 +57,21 @@ def crawl():
         d.addCallback(schedule_next_crawl, random.randint(61, 121))
         d.addErrback(catch_error)
     else:
+        # Re-randomize the start/end time
+        t1 = datetime.time( 8, random.randint(0, 59), random.randint(0, 59))
+        t2 = datetime.time(20, random.randint(0, 59), random.randint(0, 59))
         diff = dt.combine(date.min, t1) - dt.combine(date.min, cur)
+
+        if cur >= t2:
+            diff += timedelta(days = 1)
+        else:
+            diff = max(timedelta(0), diff)
+
         msg = 'Blackout hour: cur: {} not in [{} {}], sleep {} seconds'.format(cur, t1, t2, diff)
         print(msg)
         logger.info(msg)
         # reactor.callFromThread(reactor.stop)
-        time.sleep(diff.total_seconds())
-
-        # randomize the start, end time
-        m1, s1 = random.randint(0, 59), random.randint(0, 59)
-        m2, s2 = random.randint(0, 59), random.randint(0, 59)
+        reactor.callLater(diff.total_seconds(), crawl)
 
 
 def catch_error(failure):
