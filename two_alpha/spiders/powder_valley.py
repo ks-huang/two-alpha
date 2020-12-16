@@ -17,7 +17,7 @@ class PowderValleySpider(scrapy.Spider):
          'filter_caliber-range-sort-by=355-358&query_type_caliber-range-sort-by=or&query_type_brand=or') :
          [115, random.randint(241,280)],
 
-        # prrimers
+        # primers
         ('https://www.powdervalleyinc.com/product-category/reloading-supplies/primers/?query_type_product-type=or'
          '&filter_brand={}%2C{}%2C{}&query_type_brand=or&filter_product-type=small-rifle-primers') :
         ['cci', 'federal-reloading-supplies', 'cc' + chr(random.randint(ord('a'), ord('z')))],

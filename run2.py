@@ -1,15 +1,17 @@
 import datetime
-from datetime import datetime as dt
+from datetime import datetime as dt, date
 import logging
 import os
-import random
 import pytz
+import random
 from scrapy.cmdline import execute
 from scrapy.crawler import CrawlerRunner
 from scrapy.utils.project import get_project_settings
 from scrapy.utils.log import configure_logging
+import time
 from twisted.internet import reactor
 
+from two_alpha.spiders.bcm import BcmSpider
 from two_alpha.spiders.powder_valley import PowderValleySpider
 
 
@@ -28,7 +30,9 @@ def crawl_job():
     settings['FEEDS'] = { 'result.csv': {'format' : 'csv'} }
     configure_logging()
     runner = CrawlerRunner(settings)
-    return runner.crawl(PowderValleySpider)
+    runner.crawl(BcmSpider)
+    runner.crawl(PowderValleySpider)
+    return runner.join()
 
 def schedule_next_crawl(null, sleep_time):
     """
@@ -43,6 +47,7 @@ def crawl():
     each successful crawl.
     """
 
+    global m1, s1, m2, s2
     est = pytz.timezone('US/Eastern')
     t1, cur, t2 = datetime.time(8, m1, s1),  dt.utcnow().replace(tzinfo=pytz.utc).astimezone(est).time(),  datetime.time(20, m2, s2)
     if t1 < cur < t2:
@@ -53,9 +58,17 @@ def crawl():
         d.addCallback(schedule_next_crawl, random.randint(61, 121))
         d.addErrback(catch_error)
     else:
-        print('Blackout hour: cur: {} not in [{} {}]'.format(cur, t1, t2))
-        logger.info('Blackout hour: cur: {} not in [{} {}]'.format(cur, t1, t2))
-        reactor.callFromThread(reactor.stop)
+        diff = dt.combine(date.min, t1) - dt.combine(date.min, cur)
+        msg = 'Blackout hour: cur: {} not in [{} {}], sleep {} seconds'.format(cur, t1, t2, diff)
+        print(msg)
+        logger.info(msg)
+        # reactor.callFromThread(reactor.stop)
+        time.sleep(diff.total_seconds())
+
+        # randomize the start, end time
+        m1, s1 = random.randint(0, 59), random.randint(0, 59)
+        m2, s2 = random.randint(0, 59), random.randint(0, 59)
+
 
 def catch_error(failure):
     print(failure.value)
