@@ -9,6 +9,9 @@ class BcmSpider(scrapy.Spider):
         # 12.5" upper
         'https://bravocompanyusa.com/12-5-carbine-upper-group/?{}&{}' :
         ['_bc_fsnf=1', 'in_stock=1'],
+
+        # 300 BO
+        'https://bravocompanyusa.com/bcm-upper-receiver-groups-300-blackout/' : [],
     }
 
     def __init__(self):
