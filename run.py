@@ -8,7 +8,8 @@ try:
         [
             'scrapy',
             'crawl',
-            'PowderValley',
+            # 'PowderValley',
+            'MidsouthShootersSupply',
             '-o',
             'out.jl'
         ]

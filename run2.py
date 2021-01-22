@@ -12,6 +12,7 @@ from twisted.internet import reactor
 
 from two_alpha.spiders.bcm import BcmSpider
 from two_alpha.spiders.powder_valley import PowderValleySpider
+from two_alpha.spiders.midsouth import MidsouthSpider
 
 START_HOUR = 7
 END_HOUR = 23
@@ -31,6 +32,7 @@ def crawl_job():
     runner = CrawlerRunner(settings)
     runner.crawl(BcmSpider)
     runner.crawl(PowderValleySpider)
+    runner.crawl(MidsouthSpider)
     return runner.join()
 
 def schedule_next_crawl(null, sleep_time):
