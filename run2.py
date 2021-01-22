@@ -13,9 +13,10 @@ from twisted.internet import reactor
 from two_alpha.spiders.bcm import BcmSpider
 from two_alpha.spiders.powder_valley import PowderValleySpider
 
-
-t1 = datetime.time( 8, random.randint(0, 59), random.randint(0, 59))
-t2 = datetime.time(20, random.randint(0, 59), random.randint(0, 59))
+START_HOUR = 7
+END_HOUR = 23
+t1 = datetime.time(START_HOUR, random.randint(0, 59), random.randint(0, 59))
+t2 = datetime.time(END_HOUR, random.randint(0, 59), random.randint(0, 59))
 logger = logging.getLogger(__name__)
 
 def crawl_job():
@@ -58,8 +59,8 @@ def crawl():
         d.addErrback(catch_error)
     else:
         # Re-randomize the start/end time
-        t1 = datetime.time( 8, random.randint(0, 59), random.randint(0, 59))
-        t2 = datetime.time(20, random.randint(0, 59), random.randint(0, 59))
+        t1 = datetime.time(START_HOUR, random.randint(0, 59), random.randint(0, 59))
+        t2 = datetime.time(END_HOUR, random.randint(0, 59), random.randint(0, 59))
         diff = dt.combine(date.min, t1) - dt.combine(date.min, cur)
 
         if cur >= t2:

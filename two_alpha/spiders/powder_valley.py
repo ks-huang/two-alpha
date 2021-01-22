@@ -8,28 +8,34 @@ class PowderValleySpider(scrapy.Spider):
     preproc_urls = {
         # bullets
         ('https://www.powdervalleyinc.com/product-category/reloading-supplies/bullets/rifle/'
-         '?query_type_grain-weight=or&filter_grain-weight={}-gr%2C{}-gr%2C{}-gr%2C{}-gr%2C{}-gr&'
+         '?query_type_grain-weight=or&filter_grain-weight={}-gr,{}-gr,{}-gr,{}-gr,{}-gr&'
          'filter_caliber-range-sort-by=307-309&query_type_caliber-range-sort-by=or&filter_brand=sierra&query_type_brand=or') :
         [125, 180, 168, 220, random.randint(231,250)],
 
+        ('https://www.powdervalleyinc.com/product-category/reloading-supplies/bullets/rifle/'
+         '?query_type_grain-weight=or&filter_grain-weight={}-gr,{}-gr,{}-gr,{}-gr&'
+         'filter_caliber-range-sort-by=222-227&query_type_caliber-range-sort-by=or&query_type_brand=or') :
+        [55, 62, 77, random.randint(65, 70)],
+
         ('https://www.powdervalleyinc.com/product-category/reloading-supplies/bullets/pistol/'
-         '?query_type_grain-weight=or&filter_grain-weight={}-gr%2C{}-gr&'
+         '?query_type_grain-weight=or&filter_grain-weight={}-gr,{}-gr,{}-gr,{}-gr&'
          'filter_caliber-range-sort-by=355-358&query_type_caliber-range-sort-by=or&query_type_brand=or') :
-         [115, random.randint(241,280)],
+         [115, 124, 147, random.randint(241,280)],
 
         # primers
         ('https://www.powdervalleyinc.com/product-category/reloading-supplies/primers/?query_type_product-type=or'
-         '&filter_brand={}%2C{}%2C{}&query_type_brand=or&filter_product-type=small-rifle-primers') :
+         '&filter_brand={},{},{}&query_type_brand=or&filter_product-type=small-rifle-primers') :
         ['cci', 'federal-reloading-supplies', 'cc' + chr(random.randint(ord('a'), ord('z')))],
 
         # brass
         ('https://www.powdervalleyinc.com/product-category/reloading-supplies'
-         '/brass/rifle-brass/?filter_caliber-range-sort-by={}%2C{}%2C{}&query_type_caliber-range-sort-by=or') :
+         '/brass/rifle-brass/?filter_caliber-range-sort-by={},{},{}&query_type_caliber-range-sort-by=or') :
         ['300-aac-blackout','308-win', '{}-win'.format(random.randint(301, 999))],
 
         # powder
-	('https://www.powdervalleyinc.com/product-category/reloading-supplies/powder/smokeless-powder/?{}&{}&{}&{}') :
-	['filter_brand=hodgdon-powder', 'query_type_brand=or', 'filter_product-type=smokeless-powder', 'query_type_product-type=or'],
+        ('https://www.powdervalleyinc.com/product-category/reloading-supplies/powder/smokeless-powder/?'
+         'query_type_brand=or&filter_brand={},{},{}') :
+        ['alliant-powder', 'hodgdon-powder', 'imr'],
     }
 
     def __init__(self):
