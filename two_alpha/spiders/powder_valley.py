@@ -13,9 +13,9 @@ class PowderValleySpider(scrapy.Spider):
         [125, 180, 168, 220, random.randint(231,250)],
 
         ('https://www.powdervalleyinc.com/product-category/reloading-supplies/bullets/rifle/'
-         '?query_type_grain-weight=or&filter_grain-weight={}-gr,{}-gr,{}-gr,{}-gr&'
+         '?query_type_grain-weight=or&filter_grain-weight={}-gr,{}-gr,{}-gr,{}-gr,{}-gr&'
          'filter_caliber-range-sort-by=222-227&query_type_caliber-range-sort-by=or&query_type_brand=or') :
-        [55, 62, 77, random.randint(65, 70)],
+        [55, 62, 77, 69, random.randint(65, 68)],
 
         ('https://www.powdervalleyinc.com/product-category/reloading-supplies/bullets/pistol/'
          '?query_type_grain-weight=or&filter_grain-weight={}-gr,{}-gr,{}-gr,{}-gr&'
@@ -29,8 +29,8 @@ class PowderValleySpider(scrapy.Spider):
 
         # brass
         ('https://www.powdervalleyinc.com/product-category/reloading-supplies'
-         '/brass/rifle-brass/?filter_caliber-range-sort-by={},{},{}&query_type_caliber-range-sort-by=or') :
-        ['300-aac-blackout','308-win', '{}-win'.format(random.randint(301, 999))],
+         '/brass/rifle-brass/?filter_caliber-range-sort-by={},{},{},{},{}&query_type_caliber-range-sort-by=or') :
+        ['300-aac-blackout','308-win', '223-rem', '5-56-mm', '{}-win'.format(random.randint(301, 999))],
 
         # powder
         ('https://www.powdervalleyinc.com/product-category/reloading-supplies/powder/smokeless-powder/?'
