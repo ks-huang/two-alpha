@@ -23,7 +23,7 @@ class MidsouthSpider(scrapy.Spider):
             if not item.xpath('.//span[has-class("out-of-stock")]'):
                 il = ItemLoader(item=ReloadingItem(), selector=item)
                 il.add_xpath('product_name', 'normalize-space(.//div[has-class("product-description")]/a[not(contains(@rel, "nofollow"))]/text())')
-                url = response.xpath('.//div[has-class("product-description")]/a[not(contains(@rel, "nofollow"))]/@href').get()
+                url = item.xpath('.//div[has-class("product-description")]/a[not(contains(@rel, "nofollow"))]/@href').get()
                 il.add_value('url', response.urljoin(url))
                 yield il.load_item() if il.load_item() else None
 
