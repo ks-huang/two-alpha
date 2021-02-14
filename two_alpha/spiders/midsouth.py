@@ -8,6 +8,9 @@ class MidsouthSpider(scrapy.Spider):
     preproc_urls = {
         # Primers
         'https://www.midsouthshooterssupply.com/dept/reloading/primers' : [],
+
+        # 9mm bullet
+        'https://www.midsouthshooterssupply.com/dept/reloading/pistol-bullets/-point-355-dia' : [],
     }
 
     def __init__(self):

@@ -12,6 +12,9 @@ class BcmSpider(scrapy.Spider):
 
         # 300 BO
         'https://bravocompanyusa.com/bcm-upper-receiver-groups-300-blackout/' : [],
+
+        # gas block
+        'https://bravocompanyusa.com/gas-blocks/?{}&{}' : ['_bc_fsnf=1', 'in_stock=1'],
     }
 
     def __init__(self):
