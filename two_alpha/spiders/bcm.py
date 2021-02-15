@@ -2,8 +2,9 @@ import random
 import scrapy
 from scrapy.loader import ItemLoader
 from two_alpha.items import ReloadingItem
+from two_alpha.spiders.two_alpha_spider import TwoAlphaSpider
 
-class BcmSpider(scrapy.Spider):
+class BcmSpider(TwoAlphaSpider):
     name = 'BravoCompany'
     preproc_urls = {
         # 12.5" upper

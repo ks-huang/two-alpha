@@ -3,8 +3,9 @@ import scrapy
 from scrapy.loader import ItemLoader
 from scrapy.http import Request
 from two_alpha.items import ReloadingItem
+from two_alpha.spiders.two_alpha_spider import TwoAlphaSpider
 
-class MidsouthSpider(scrapy.Spider):
+class MidsouthSpider(TwoAlphaSpider):
     name = 'MidsouthShootersSupply'
     preproc_urls = {
         # Primers
@@ -18,7 +19,6 @@ class MidsouthSpider(scrapy.Spider):
         ['125', '168' ,'180', '220'],
     }
 
-    bind_ip =  '10.1.1.5'
     def __init__(self):
         self.start_urls = []
         for url, args in self.preproc_urls.items():
@@ -26,10 +26,6 @@ class MidsouthSpider(scrapy.Spider):
             self.start_urls.append(url.format(*args))
 
         super().__init__
-
-    def start_requests(self):
-        for url in self.start_urls:
-            yield Request(url, dont_filter=True, meta={'bindaddress': (self.bind_ip, 0)})
 
     def parse(self, response):
         for item in response.xpath('//div[has-class("product")]'):

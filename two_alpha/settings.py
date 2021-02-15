@@ -52,6 +52,15 @@ USER_AGENTS = [
      'Safari/537.36'),  # chrome
 ]
 
+# Bind Addresses
+BIND_ADDRESSES = [
+    '10.1.1.5', 
+    '10.1.1.6',
+    '10.1.1.7',
+    '10.1.1.8',
+    '10.1.1.9'
+]
+
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 

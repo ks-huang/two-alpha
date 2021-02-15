@@ -2,8 +2,9 @@ import random
 import scrapy
 from scrapy.loader import ItemLoader
 from two_alpha.items import ReloadingItem
+from two_alpha.spiders.two_alpha_spider import TwoAlphaSpider
 
-class PowderValleySpider(scrapy.Spider):
+class PowderValleySpider(TwoAlphaSpider):
     name = 'PowderValley'
     preproc_urls = {
         # bullets
