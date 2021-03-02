@@ -13,6 +13,8 @@ import os
 import smtplib
 import time
 
+from two_alpha.send_gmail import SendGmail
+
 logger = logging.getLogger(__name__)
 
 class TwoAlphaPipeline:
@@ -30,6 +32,7 @@ class TwoAlphaPipeline:
             os.makedirs(self.snapshot_file_path)
 
     def send_notification(self, email, content):
+        """
         # Establish a secure session with gmail's outgoing SMTP server using your gmail account
         server = smtplib.SMTP( "smtp.gmail.com", 587 )
         server.starttls()
@@ -41,7 +44,9 @@ class TwoAlphaPipeline:
         msg['To'] = email
         msg['From'] = self.GMAIL_ACCOUNT
         server.send_message(msg)
+        """
 
+        SendGmail.send_message(self.GMAIL_ACCOUNT, email, content)
     def open_spider(self, spider):
         cname = spider.__class__.__name__
         self.snapshots[cname] = {}
