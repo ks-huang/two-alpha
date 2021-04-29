@@ -17,6 +17,10 @@ class MidsouthSpider(TwoAlphaSpider):
         # .30 bullet
         'https://www.midsouthshooterssupply.com/dept/reloading/rifle-bullets/-point-308-dia?instock=true&grain={}gr,{}gr,{}gr,{}gr&brand=sierra-bullets' :
         ['125', '168' ,'180', '220'],
+
+        # Press
+        'https://www.midsouthshooterssupply.com/dept/reloading/reloading-presses/press-only?brand={},{}' :
+        ['forster-reloading', 'redding-reloading']
     }
 
     def __init__(self):

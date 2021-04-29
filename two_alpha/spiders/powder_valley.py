@@ -28,6 +28,8 @@ class PowderValleySpider(TwoAlphaSpider):
          '&filter_brand={},{},{}&query_type_brand=or&filter_product-type=small-rifle-primers') :
         ['cci', 'federal-reloading-supplies', 'cc' + chr(random.randint(ord('a'), ord('z')))],
 
+        ('https://www.powdervalleyinc.com/product-category/reloading-supplies/primers/') : [],
+
         # brass
         ('https://www.powdervalleyinc.com/product-category/reloading-supplies'
          '/brass/rifle-brass/?filter_caliber-range-sort-by={},{},{},{},{}&query_type_caliber-range-sort-by=or') :
