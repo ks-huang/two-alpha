@@ -14,8 +14,8 @@ class BcmSpider(TwoAlphaSpider):
         # 300 BO
         'https://bravocompanyusa.com/bcm-upper-receiver-groups-300-blackout/' : [],
 
-        # gas block
-        'https://bravocompanyusa.com/gas-blocks/?{}&{}' : ['_bc_fsnf=1', 'in_stock=1'],
+        # BCG
+        'https://bravocompanyusa.com/ar15-upper-parts/ar-15-bolt-carrier-charging-handles/bcm-bolt-carrier-groups-components-and-parts/?{}&{}' : ['_bc_fsnf=1', 'in_stock=1'],
     }
 
     def __init__(self):
