@@ -72,7 +72,8 @@ class TwoAlphaPipeline:
         logger.info(diff)
         if diff:
             msg = ''.join([p + ': ' + u + '\n' for p, u in diff.items()])
-            email = '6467632336@vzwpix.com;4158158876@txt.att.net'
+            # email = '6467632336@vzwpix.com;4257868780@mms.att.net;6265459167@tmomail.net'
+            email = '6467632336@vzwpix.com;4257868780@mms.att.net'
             self.send_notification(email, msg)
             stamped_file_path = os.path.join(self.snapshot_file_path, self.snapshot_file_name.format(cname + '-' + time.strftime("%Y%m%d-%H%M%S")))
             with open(stamped_file_path, 'w') as outfile:
